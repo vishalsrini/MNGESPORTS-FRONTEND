@@ -1,0 +1,93 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    {{matchDetails.title | uppercase}}
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- Cover Image -->
+  <div *ngIf="matchDetails.youtubeLink == 'NA'"
+    style="height: 200px; border-radius: 0px 0px 50px 50px; background-size:cover"
+    [style.backgroundImage]="'url(' + matchDetails.imgUrl + ')'">
+    <!-- <img *ngIf="matchDetails.youtubeLink == 'NA'" [src]="matchDetails.img" width="100%" height="200px"> -->
+  </div>
+
+  <iframe *ngIf="matchDetails.youtubeLink != 'NA'" height="200px" width="100%" [src]="youtubeUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Description
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{matchDetails.description}}
+
+      <br>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col size="7" class="ion-align-self-center">
+            <small> Join us @ {{matchDetails.date}}, {{matchDetails.time}} </small>
+          </ion-col>
+          <ion-col *ngIf="!userJoinedAlready" class="ion-align-self-center">
+            <ion-button style="display:inline-block" (click)="fetchDetailsAndJoin()">Join Now</ion-button>
+          </ion-col>
+        </ion-row>
+        <b *ngIf="userJoinedAlready"> Please find your room details below - </b> <br>
+        <ion-row *ngIf="userJoinedAlready">
+          <ion-col>
+            Room ID </ion-col>
+          <ion-col>
+            <ion-badge color="warning">{{matchDetails.roomId}}</ion-badge>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="userJoinedAlready">
+          <ion-col>
+            Room Password
+          </ion-col>
+          <ion-col>
+            <ion-badge color="warning">{{matchDetails.roomPass}}</ion-badge>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="userJoinedAlready">
+          <ion-col>
+            Slot No
+          </ion-col>
+          <ion-col>
+            <ion-badge color="warning">{{slotNo}}</ion-badge>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Rivals List
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <span *ngIf="teamDetails.length <= 0">Be the first one to join the event !!</span>
+      <ion-grid *ngIf="teamDetails.length > 0">
+        <ion-row>
+          <ion-col color="primary"> SLOT NO </ion-col>
+          <ion-col color="primary"> TEAM NAME </ion-col>
+        </ion-row>
+        <ion-row *ngFor="let team of teamDetails">
+          <ion-col>{{team.slotNo}}</ion-col>
+          <ion-col>{{team.teamName}}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+
+  </ion-card>
+
+</ion-content>

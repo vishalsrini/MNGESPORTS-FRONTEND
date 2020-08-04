@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>MNG ESPORTS</ion-title>
+    <ion-buttons slot="secondary">
+      <ion-button (click)="signOut()">
+        <ion-icon slot="start" name="person-circle"></ion-icon>
+        Sign Out
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <app-slider>
+    <ion-slide *ngFor="let img of sliderUrls">
+      <img [src]="img">
+    </ion-slide>
+  </app-slider>
+
+  <ion-grid>
+    <ion-row>
+      <h3>Upcoming Matches</h3>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card *ngFor="let event of events">
+          <ion-card-content style="padding: 5px">
+            <ion-grid [ngClass]="event.teamsCount >= 25 ? 'border-red': 'border-green'">
+              <ion-row>
+                <ion-col size="8" class="ion-align-self-start">
+                  <ion-row>
+                    <ion-col tappable>
+                      <ion-grid>
+                        <ion-row>
+                          <ion-col>
+                            <b>{{event.title | uppercase}}</b>
+                          </ion-col>
+                        </ion-row>
+
+                        <ion-row>
+                          <ion-col>
+                            <small>{{event.date}}, {{event.time}}</small>
+                          </ion-col>
+                        </ion-row>
+                      </ion-grid>
+
+                      <ion-button *ngIf="joinedEvents.indexOf(event.matchId) < 0" (click)="getDetails(event, false)">
+                        View More - {{25 - event.userCount}} Left</ion-button>
+                      <ion-button *ngIf="joinedEvents.indexOf(event.matchId) >= 0" (click)="getDetails(event, true)"
+                        color="success">Be Ready</ion-button>
+                      <!-- <ion-spinner name="crescent" [color]="event.teamsCount == 25 ? 'danger' : 'secondary'" paused="true" [duration]="event.teamsCount"></ion-spinner> -->
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+                <ion-col tappable class="ion-align-self-center">
+                  <!-- Circle to display amount filled -->
+                  <circle-progress
+                  [percent]="event.userCount*4"
+                  [radius]="25"
+                  [outerStrokeWidth]="5"
+                  [innerStrokeWidth]="3"
+                  [space]="2"
+                  [titleFontSize] = "10"
+                  [showSubtitle] = "false"
+                  [outerStrokeColor]="'#78C000'"
+                  [innerStrokeColor]="'#C7E596'"
+                  [animation]="true"
+                  [animationDuration]="300"
+                  ></circle-progress>
+
+                </ion-col>
+              </ion-row>
+
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
